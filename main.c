@@ -1,13 +1,10 @@
 /*
- *
  * Copyright 2024 Oleg Borodin <onborodin@gmail.com>
- *
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 
 typedef struct {
     int64_t* measures;
@@ -26,7 +23,7 @@ void integrator_init(integrator_t* integrator, int capa) {
 }
 
 void integrator_addmeasure(integrator_t* integrator, int64_t measure, int64_t period) {
-        if (integrator->posn++ == integrator->capa) {
+        if (++integrator->posn >= integrator->capa) {
                 integrator->posn = 0;
         }
         integrator->measures[integrator->posn] = measure * period;
@@ -44,15 +41,15 @@ int64_t getfakemeasure(int64_t min, int64_t max) {
         return rand() % (max - min) + min;
 }
 
-
 int main(int argc, char **argv){
 
         integrator_t integrator;
         int integrator_capa = 128;
         int integrator_meascount = 64 * 1024;
 
-        int64_t minl_measure = 100;
-        int64_t maxl_measure = 300;
+        int64_t minl_measure = 120;
+        int64_t maxl_measure = 150;
+        int64_t integdevider = 1000;
 
         integrator_init(&integrator, integrator_capa);
         for (int i = 0; i < integrator_meascount; i++) {
@@ -63,10 +60,9 @@ int main(int argc, char **argv){
 
                 if ((i % (integrator_capa * 16)) == 1) {
                         int64_t integsum = integrator_calcmeasure(&integrator);
-                        printf("%12ld\n", integsum);
+                        printf("%12ld\n", integsum / integdevider);
                 }
         }
-
 	return 0;
 }
 
