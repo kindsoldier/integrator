@@ -49,7 +49,7 @@ int main(int argc, char **argv){
 
         int64_t minl_measure = 120;
         int64_t maxl_measure = 150;
-        int64_t integdevider = 1000;
+        int64_t integdivider = 1000;
 
         integrator_init(&integrator, integrator_capa);
         for (int i = 0; i < integrator_meascount; i++) {
@@ -60,7 +60,7 @@ int main(int argc, char **argv){
 
                 if ((i % (integrator_capa * 16)) == 1) {
                         int64_t integsum = integrator_calcmeasure(&integrator);
-                        printf("%12ld\n", integsum / integdevider);
+                        printf("%12ld\n", integsum / integdivider);
                 }
         }
 	return 0;
